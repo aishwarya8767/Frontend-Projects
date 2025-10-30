@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette Picker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at center, #0b0c1a 10%, #000 100%);
+      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .color-segment {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-segment:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-4xl font-bold text-purple-400 mb-2">Color Palette Picker</h1>
+  <p class="text-lg text-gray-300 mb-6">Generate random color palettes + copy hex codes<br><span class="text-purple-400">Beginner-friendly & aesthetic</span></p>
+
+  <div id="colorWheel" class="flex flex-wrap justify-center gap-3 mb-6"></div>
+
+  <button id="generateBtn" class="px-6 py-2 bg-purple-500 hover:bg-purple-400 rounded-lg font-medium shadow-lg">Generate Palette</button>
+  <p id="copiedMsg" class="text-emerald-400 mt-4 h-6"></p>
+
+  <script>
+    const colorWheel = document.getElementById('colorWheel');
+    const generateBtn = document.getElementById('generateBtn');
+    const copiedMsg = document.getElementById('copiedMsg');
+
+    function randomColor() {
+      return '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0').toUpperCase();
+    }
+
+    function generatePalette() {
+      colorWheel.innerHTML = '';
+      for (let i = 0; i < 7; i++) {
+        const color = randomColor();
+        const div = document.createElement('div');
+        div.className = 'color-segment';
+        div.style.background = color;
+        div.title = color;
+
+        const label = document.createElement('span');
+        label.textContent = color;
+        label.className = 'block mt-2 text-sm text-gray-300';
+
+        div.addEventListener('click', () => {
+          navigator.clipboard.writeText(color);
+          copiedMsg.textContent = `Copied ${color}`;
+          setTimeout(() => (copiedMsg.textContent = ''), 1200);
+        });
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex flex-col items-center';
+        wrapper.appendChild(div);
+        wrapper.appendChild(label);
+        colorWheel.appendChild(wrapper);
+      }
+    }
+
+    generateBtn.addEventListener('click', generatePalette);
+    generatePalette();
+  </script>
+</body>
+</html>
