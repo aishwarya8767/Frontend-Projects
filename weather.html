@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #0d0d2b, #000);
+      color: #fff;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      color: #a97bff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #b3b3b3;
+    }
+
+    .weather-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      width: 280px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      outline: none;
+      text-align: center;
+    }
+
+    button {
+      background-color: #a97bff;
+      border: none;
+      padding: 10px 20px;
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #8a5efc;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+
+    .emoji {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Weather App</h1>
+  <p>Fetch weather using a free API 🌦️</p>
+
+  <div class="weather-card">
+    <input type="text" id="cityInput" placeholder="Enter city name" />
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div class="result" id="result">
+      <div class="emoji">☀️</div>
+      <p>Enter a city to see weather</p>
+    </div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const city = document.getElementById('cityInput').value;
+      const resultDiv = document.getElementById('result');
+
+      if (!city) {
+        resultDiv.innerHTML = '<p>Please enter a city name 🌍</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=YOUR_API_KEY`);
+        const data = await response.json();
+
+        if (data.cod === '404') {
+          resultDiv.innerHTML = '<p>City not found 😢</p>';
+          return;
+        }
+
+        const temp = data.main.temp;
+        const condition = data.weather[0].main;
+
+        let emoji = '☁️';
+        if (condition === 'Clear') emoji = '☀️';
+        else if (condition === 'Rain') emoji = '🌧️';
+        else if (condition === 'Snow') emoji = '❄️';
+        else if (condition === 'Thunderstorm') emoji = '⛈️';
+
+        resultDiv.innerHTML = `
+          <div class="emoji">${emoji}</div>
+          <p><strong>${city}</strong></p>
+          <p>${temp}°C, ${condition}</p>
+        `;
+      } catch (error) {
+        resultDiv.innerHTML = '<p>Something went wrong 😞</p>';
+      }
+    }
+  </script>
+</body>
+</html>
