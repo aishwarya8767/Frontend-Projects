@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Music Player</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #0b0c20 0%, #000 100%);
+      color: #c5aaff;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.2em;
+      color: #a67cff;
+    }
+    p {
+      margin: 0 0 2em 0;
+      color: #9a8cfb;
+    }
+    .player {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 30px rgba(166, 124, 255, 0.3);
+    }
+    .controls {
+      display: flex;
+      gap: 1em;
+      margin-top: 1em;
+    }
+    button {
+      background: #a67cff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      color: #fff;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #c5aaff;
+    }
+    img.note {
+      width: 120px;
+      filter: drop-shadow(0 0 20px rgba(255, 0, 100, 0.6));
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Music Player</h1>
+  <p>Play/Pause songs with UI controls</p>
+  <div class="player">
+    <img src="https://cdn-icons-png.flaticon.com/512/727/727240.png" class="note" alt="music note">
+    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    <div class="controls">
+      <button id="play">▶️</button>
+      <button id="pause">⏸️</button>
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('play');
+    const pauseBtn = document.getElementById('pause');
+
+    playBtn.addEventListener('click', () => {
+      audio.play();
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      audio.pause();
+    });
+  </script>
+</body>
+</html>
